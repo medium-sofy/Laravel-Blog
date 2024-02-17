@@ -17,6 +17,19 @@ Route::get('/', function () {
     return view('posts');
 });
 
-Route::get('/post', function(){
-  return view('post');
+// Using '{}' in the route, is considered a wildcard, meaning that any string written in place of {post} will be matched and passed to the closure as a parameter, in this case, its called $slug
+Route::get('/posts/{post}', function($slug){
+  $path = __DIR__ . "/../resources/posts/{$slug}.html";
+  
+  // remember to always check if the fiven path exists
+  if(! file_exists($path))
+  {
+    return redirect('/');
+  }
+  $post = file_get_contents($path);
+  return view('post',
+  [
+    'post' => $post
+  ]
+);
 });
