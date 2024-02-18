@@ -14,7 +14,7 @@ use App\Models\Post;
 */
 
 Route::get('/', function () {
-    return view('posts');
+    return view('posts', ['posts' => Post::all()]);
 });
 
 // Using '{}' in the route, is considered a wildcard, meaning that any string written in place of {post} will be matched and passed to the closure as a parameter, in this case, its called $slug
