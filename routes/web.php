@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Models\Post;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,15 +19,6 @@ Route::get('/', function () {
 
 // Using '{}' in the route, is considered a wildcard, meaning that any string written in place of {post} will be matched and passed to the closure as a parameter, in this case, its called $slug
 Route::get('/posts/{post}', function($slug){
- 
-  // remember to always check if the fiven path exists
-  if(! file_exists($path = __DIR__ . "/../resources/posts/{$slug}.html"))
-  {
-    return redirect('/');
-  }
-
-  $post = cache()->remember("post.{$slug}" , 5 , fn() => file_get_contents($path));  
-  
-  return view('post',['post' => $post]);
-
+    // Find a post by its slug and pass it to a view called post
+    return view('post',['post' => Post::find($slug)]);
 })->where('post', '[A-z_\-]+'); // Only allow upper/Lowercase letters as well as dashes and underscores
